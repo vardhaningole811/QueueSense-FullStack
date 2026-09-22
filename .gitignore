@@ -1,0 +1,48 @@
+# ==============================================================================
+# QueueSense — Root .gitignore
+# ==============================================================================
+
+# Local Portable Database & Tools (Binaries / Data Directories)
+/pgsql/
+/tools/
+/scratch/
+postmaster.pid
+
+# Java / Maven Build Artifacts
+/backend/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Node / Frontend Dependencies and Builds
+/frontend/node_modules/
+/frontend/dist/
+.eslintcache
+oxlint_report.json
+
+# Environment Variables & Secret Configuration
+.env
+.env.*
+!.env.example
+*.local
+
+# Application & Database Logs
+*.log
+logs/
+pgsql/logfile.log
+
+# IDE & Editor Configuration
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.project
+.classpath
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+Desktop.ini

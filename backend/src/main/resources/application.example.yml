@@ -1,0 +1,33 @@
+# ==============================================================================
+# QueueSense — Example Application Configuration (Template)
+# Copy this file to application.yml or set environment variables.
+# DO NOT COMMIT REAL CREDENTIALS OR PRODUCTION SECRETS TO VERSION CONTROL.
+# ==============================================================================
+
+server:
+  port: ${PORT:8080}
+
+spring:
+  application:
+    name: queuesense-backend
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/queuesense}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:your_secure_db_password_here}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+app:
+  jwt:
+    # 256-bit+ HMAC-SHA key for signing JSON Web Tokens
+    secret: ${JWT_SECRET:your_secure_random_jwt_secret_key_at_least_32_characters_long}
+    expiration-milliseconds: ${JWT_EXPIRATION_MS:86400000} # 24 hours
+  booking:
+    grace-period-minutes: ${BOOKING_GRACE_PERIOD_MINS:10}
