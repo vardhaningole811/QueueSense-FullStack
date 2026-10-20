@@ -47,30 +47,45 @@ export default function LibrariesList() {
       {error && <ErrorMessage message={error} />}
 
       <div className="facility-grid">
-        {facilities.map((fac) => (
-          <div key={fac.id} className="facility-card">
-            <div>
-              <div className="facility-card-header">
-                <h3 className="facility-title">{fac.name}</h3>
-                <span className="facility-type-tag">{fac.category}</span>
+        {facilities.map((fac) => {
+          const isSports = fac.category === 'SPORTS' || fac.type === 'SPORTS' || fac.name?.toLowerCase().includes('sports');
+          const isELibrary = fac.name?.toLowerCase().includes('e-library');
+          const targetUrl = isSports
+            ? '/student/sports'
+            : isELibrary
+            ? '/student/elibrary'
+            : `/student/libraries/${fac.id}`;
+          const targetLabel = isSports
+            ? 'View Sports Complex'
+            : isELibrary
+            ? 'Book Seats (Floor Plan)'
+            : 'View & Book Resources';
+
+          return (
+            <div key={fac.id} className="facility-card">
+              <div>
+                <div className="facility-card-header">
+                  <h3 className="facility-title">{fac.name}</h3>
+                  <span className="facility-type-tag">{fac.category}</span>
+                </div>
+                <p className="facility-desc">{fac.description}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--navy-600)', marginBottom: 16 }}>
+                  <CheckCircle2 size={15} style={{ color: 'var(--color-available)' }} />
+                  <span>Active automated resource allocation enabled</span>
+                </div>
               </div>
-              <p className="facility-desc">{fac.description}</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--navy-600)', marginBottom: 16 }}>
-                <CheckCircle2 size={15} style={{ color: 'var(--color-available)' }} />
-                <span>Active automated resource allocation enabled</span>
+              <div className="facility-card-footer">
+                <span style={{ fontSize: 12, color: 'var(--navy-500)', fontWeight: 500 }}>
+                  Facility #{fac.id}
+                </span>
+                <Link to={targetUrl} className="btn btn-primary btn-sm">
+                  <span>{targetLabel}</span>
+                  <ArrowRight size={14} />
+                </Link>
               </div>
             </div>
-            <div className="facility-card-footer">
-              <span style={{ fontSize: 12, color: 'var(--navy-500)', fontWeight: 500 }}>
-                Facility #{fac.id}
-              </span>
-              <Link to={`/student/libraries/${fac.id}`} className="btn btn-primary btn-sm">
-                <span>View & Book Resources</span>
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

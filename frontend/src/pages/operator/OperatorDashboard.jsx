@@ -18,6 +18,7 @@ import {
   X,
   Building2,
   Users,
+  Trophy,
 } from 'lucide-react';
 
 export default function OperatorDashboard() {
@@ -53,6 +54,10 @@ export default function OperatorDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
+    const interval = setInterval(() => {
+      fetchDashboardData(true);
+    }, 10000);
+    return () => clearInterval(interval);
   }, [fetchDashboardData]);
 
   const handleApprove = async (requestId) => {
@@ -127,7 +132,7 @@ export default function OperatorDashboard() {
             <Clock size={22} />
           </div>
           <div className="stat-info">
-            <span className="stat-value">{stats?.pendingRequestsCount ?? 0}</span>
+            <span className="stat-value">{stats?.pendingRequestsCount ?? stats?.pendingRequests ?? 0}</span>
             <span className="stat-label">Pending Requests</span>
           </div>
         </div>
@@ -137,7 +142,7 @@ export default function OperatorDashboard() {
             <CheckCircle size={22} />
           </div>
           <div className="stat-info">
-            <span className="stat-value">{stats?.availableResourcesCount ?? 0}</span>
+            <span className="stat-value">{stats?.availableResourcesCount ?? stats?.availableResources ?? 0}</span>
             <span className="stat-label">Available Resources</span>
           </div>
         </div>
@@ -147,7 +152,7 @@ export default function OperatorDashboard() {
             <Layers size={22} />
           </div>
           <div className="stat-info">
-            <span className="stat-value">{stats?.reservedResourcesCount ?? 0}</span>
+            <span className="stat-value">{stats?.reservedResourcesCount ?? stats?.reservedResources ?? 0}</span>
             <span className="stat-label">Reserved (Approved)</span>
           </div>
         </div>
@@ -157,7 +162,7 @@ export default function OperatorDashboard() {
             <Lock size={22} />
           </div>
           <div className="stat-info">
-            <span className="stat-value">{stats?.occupiedResourcesCount ?? 0}</span>
+            <span className="stat-value">{stats?.occupiedResourcesCount ?? stats?.occupiedResources ?? 0}</span>
             <span className="stat-label">Currently Occupied</span>
           </div>
         </div>
@@ -167,7 +172,7 @@ export default function OperatorDashboard() {
             <ShieldCheck size={22} />
           </div>
           <div className="stat-info">
-            <span className="stat-value">{stats?.todayCheckInsCount ?? 0}</span>
+            <span className="stat-value">{stats?.todayCheckInsCount ?? stats?.todayCheckIns ?? 0}</span>
             <span className="stat-label">Today's Check-ins</span>
           </div>
         </div>
@@ -291,6 +296,19 @@ export default function OperatorDashboard() {
           </p>
           <Link to="/operator/resources" className="btn btn-secondary btn-sm">
             <span>Manage Resources</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
+
+        <div className="section-card" style={{ marginBottom: 0 }}>
+          <h3 style={{ fontSize: 15, fontWeight: 600, color: 'var(--navy-900)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Trophy size={16} /> Sports Inventory & Courts
+          </h3>
+          <p style={{ fontSize: 13, color: 'var(--navy-600)', marginBottom: 16 }}>
+            Manage sports equipment quantities, track damaged/maintenance physical units, and control court closures.
+          </p>
+          <Link to="/operator/sports-inventory" className="btn btn-primary btn-sm">
+            <span>Manage Sports Complex</span>
             <ArrowRight size={13} />
           </Link>
         </div>

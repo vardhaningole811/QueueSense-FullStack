@@ -14,11 +14,16 @@ public class UsageRequestResponseDto {
     private Long resourceId;
     private String resourceName;
     private String resourceType;
+    private Long resourceItemId;
+    private String resourceItemName;
     private Long facilityId;
     private String facilityName;
     private String expectedArrival;
     private String expectedDuration;
     private Integer groupSize;
+    private Integer quantity;
+    private LocalDateTime slotStartTime;
+    private LocalDateTime slotEndTime;
     private RequestStatus status;
     private LocalDateTime createdAt;
     private LocalDateTime approvedAt;
@@ -43,6 +48,10 @@ public class UsageRequestResponseDto {
             dto.setResourceName(request.getResource().getName());
             dto.setResourceType(request.getResource().getType());
         }
+        if (request.getResourceItem() != null) {
+            dto.setResourceItemId(request.getResourceItem().getId());
+            dto.setResourceItemName(request.getResourceItem().getName());
+        }
         if (request.getFacility() != null) {
             dto.setFacilityId(request.getFacility().getId());
             dto.setFacilityName(request.getFacility().getName());
@@ -50,6 +59,9 @@ public class UsageRequestResponseDto {
         dto.setExpectedArrival(request.getExpectedArrival());
         dto.setExpectedDuration(request.getExpectedDuration());
         dto.setGroupSize(request.getGroupSize());
+        dto.setQuantity(request.getQuantity() != null ? request.getQuantity() : 1);
+        dto.setSlotStartTime(request.getSlotStartTime());
+        dto.setSlotEndTime(request.getSlotEndTime());
         dto.setStatus(request.getStatus());
         dto.setCreatedAt(request.getCreatedAt());
         dto.setApprovedAt(request.getApprovedAt());
@@ -90,6 +102,12 @@ public class UsageRequestResponseDto {
     public String getResourceType() { return resourceType; }
     public void setResourceType(String resourceType) { this.resourceType = resourceType; }
 
+    public Long getResourceItemId() { return resourceItemId; }
+    public void setResourceItemId(Long resourceItemId) { this.resourceItemId = resourceItemId; }
+
+    public String getResourceItemName() { return resourceItemName; }
+    public void setResourceItemName(String resourceItemName) { this.resourceItemName = resourceItemName; }
+
     public Long getFacilityId() { return facilityId; }
     public void setFacilityId(Long facilityId) { this.facilityId = facilityId; }
 
@@ -128,4 +146,13 @@ public class UsageRequestResponseDto {
 
     public LocalDateTime getExpiresAt() { return expiresAt; }
     public void setExpiresAt(LocalDateTime expiresAt) { this.expiresAt = expiresAt; }
+
+    public Integer getQuantity() { return quantity != null ? quantity : 1; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+
+    public LocalDateTime getSlotStartTime() { return slotStartTime; }
+    public void setSlotStartTime(LocalDateTime slotStartTime) { this.slotStartTime = slotStartTime; }
+
+    public LocalDateTime getSlotEndTime() { return slotEndTime; }
+    public void setSlotEndTime(LocalDateTime slotEndTime) { this.slotEndTime = slotEndTime; }
 }

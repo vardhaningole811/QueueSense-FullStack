@@ -10,6 +10,7 @@ import com.queuesense.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -22,17 +23,32 @@ public class CheckOutService {
     private final UsageSessionRepository usageSessionRepository;
     private final StudentProfileRepository studentProfileRepository;
     private final AuditLogService auditLogService;
+    private Clock clock;
 
     public CheckOutService(UsageRequestRepository usageRequestRepository,
                            ResourceRepository resourceRepository,
                            UsageSessionRepository usageSessionRepository,
                            StudentProfileRepository studentProfileRepository,
-                           AuditLogService auditLogService) {
+                           AuditLogService auditLogService,
+                           Clock clock) {
         this.usageRequestRepository = usageRequestRepository;
         this.resourceRepository = resourceRepository;
         this.usageSessionRepository = usageSessionRepository;
         this.studentProfileRepository = studentProfileRepository;
         this.auditLogService = auditLogService;
+        this.clock = clock;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
+
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    public LocalDateTime getCurrentTime() {
+        return LocalDateTime.now(this.clock);
     }
 
     @Transactional
@@ -45,15 +61,19 @@ public class CheckOutService {
         }
 
         // Complete request
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = getCurrentTime();
         request.setStatus(RequestStatus.COMPLETED);
         request.setCheckOutAt(now);
         UsageRequest savedRequest = usageRequestRepository.save(request);
 
-        // Release resource back to AVAILABLE
+        // Release resource back to AVAILABLE for non-sports
         Resource resource = request.getResource();
-        resource.setStatus(ResourceStatus.AVAILABLE);
-        resourceRepository.save(resource);
+        Facility facility = resource.getFacility();
+        boolean isSports = facility != null && ("SPORTS".equalsIgnoreCase(facility.getType()) || "Sports Complex".equalsIgnoreCase(facility.getName()));
+        if (!isSports) {
+            resource.setStatus(ResourceStatus.AVAILABLE);
+            resourceRepository.save(resource);
+        }
 
         // Close active usage session
         Optional<UsageSession> sessionOpt = usageSessionRepository.findByUsageRequest(savedRequest);

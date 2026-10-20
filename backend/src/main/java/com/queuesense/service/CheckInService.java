@@ -12,6 +12,7 @@ import com.queuesense.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,6 +25,7 @@ public class CheckInService {
     private final UserRepository userRepository;
     private final StudentProfileRepository studentProfileRepository;
     private final AuditLogService auditLogService;
+    private Clock clock;
 
     public CheckInService(UsageRequestRepository usageRequestRepository,
                           ResourceRepository resourceRepository,
@@ -31,7 +33,8 @@ public class CheckInService {
                           UsageSessionRepository usageSessionRepository,
                           UserRepository userRepository,
                           StudentProfileRepository studentProfileRepository,
-                          AuditLogService auditLogService) {
+                          AuditLogService auditLogService,
+                          Clock clock) {
         this.usageRequestRepository = usageRequestRepository;
         this.resourceRepository = resourceRepository;
         this.checkInRepository = checkInRepository;
@@ -39,6 +42,19 @@ public class CheckInService {
         this.userRepository = userRepository;
         this.studentProfileRepository = studentProfileRepository;
         this.auditLogService = auditLogService;
+        this.clock = clock;
+    }
+
+    public void setClock(Clock clock) {
+        this.clock = clock;
+    }
+
+    public Clock getClock() {
+        return this.clock;
+    }
+
+    public LocalDateTime getCurrentTime() {
+        return LocalDateTime.now(this.clock);
     }
 
     @Transactional
@@ -54,11 +70,15 @@ public class CheckInService {
             throw new InvalidStateTransitionException("Check-in failed: Request status is " + request.getStatus() + ", but must be APPROVED.");
         }
 
+        LocalDateTime now = getCurrentTime();
+
         // Validation 2: check expiry
-        if (request.getExpiresAt() != null && LocalDateTime.now().isAfter(request.getExpiresAt())) {
+        if (request.getExpiresAt() != null && now.isAfter(request.getExpiresAt())) {
             request.setStatus(RequestStatus.EXPIRED);
             Resource resource = request.getResource();
-            if (resource.getStatus() == ResourceStatus.RESERVED) {
+            Facility facility = resource.getFacility();
+            boolean isSports = facility != null && ("SPORTS".equalsIgnoreCase(facility.getType()) || "Sports Complex".equalsIgnoreCase(facility.getName()));
+            if (!isSports && resource.getStatus() == ResourceStatus.RESERVED) {
                 resource.setStatus(ResourceStatus.AVAILABLE);
                 resourceRepository.save(resource);
             }
@@ -68,16 +88,23 @@ public class CheckInService {
 
         // Validation 3: resource status
         Resource resource = request.getResource();
+        Facility facility = resource.getFacility();
+        boolean isSports = facility != null && ("SPORTS".equalsIgnoreCase(facility.getType()) || "Sports Complex".equalsIgnoreCase(facility.getName()));
 
         // Perform Check-in
-        LocalDateTime now = LocalDateTime.now();
         request.setStatus(RequestStatus.CHECKED_IN);
         request.setCheckInAt(now);
+        if (request.getSlotEndTime() == null) {
+            java.time.Duration duration = BookingLifecycleService.parseDuration(request.getExpectedDuration());
+            request.setSlotEndTime(now.plus(duration));
+        }
         UsageRequest savedRequest = usageRequestRepository.save(request);
 
-        // Update resource to OCCUPIED
-        resource.setStatus(ResourceStatus.OCCUPIED);
-        resourceRepository.save(resource);
+        // Update resource to OCCUPIED for non-sports
+        if (!isSports) {
+            resource.setStatus(ResourceStatus.OCCUPIED);
+            resourceRepository.save(resource);
+        }
 
         // Create CheckIn record
         CheckInMethod method = verifyDto.getMethod() != null ? verifyDto.getMethod() : CheckInMethod.QR_SCAN;

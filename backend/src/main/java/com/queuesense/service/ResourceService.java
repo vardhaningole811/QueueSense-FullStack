@@ -17,22 +17,27 @@ public class ResourceService {
     private final ResourceRepository resourceRepository;
     private final FacilityRepository facilityRepository;
     private final AuditLogService auditLogService;
+    private final BookingLifecycleService bookingLifecycleService;
 
     public ResourceService(ResourceRepository resourceRepository,
                            FacilityRepository facilityRepository,
-                           AuditLogService auditLogService) {
+                           AuditLogService auditLogService,
+                           BookingLifecycleService bookingLifecycleService) {
         this.resourceRepository = resourceRepository;
         this.facilityRepository = facilityRepository;
         this.auditLogService = auditLogService;
+        this.bookingLifecycleService = bookingLifecycleService;
     }
 
     public List<Resource> getResourcesByFacility(Long facilityId) {
+        bookingLifecycleService.processExpiredBookings(bookingLifecycleService.getCurrentTime());
         Facility facility = facilityRepository.findById(facilityId)
                 .orElseThrow(() -> new ResourceNotFoundException("Facility not found with ID: " + facilityId));
         return resourceRepository.findByFacilityAndActiveTrue(facility);
     }
 
     public List<Resource> getAllResources() {
+        bookingLifecycleService.processExpiredBookings(bookingLifecycleService.getCurrentTime());
         return resourceRepository.findAll();
     }
 

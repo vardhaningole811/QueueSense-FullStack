@@ -2,6 +2,7 @@ package com.queuesense.entity;
 
 import com.queuesense.enums.ResourceStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "resources")
@@ -28,6 +29,16 @@ public class Resource {
     @Column(nullable = false)
     private boolean active = true;
 
+    @Column(length = 100)
+    private String bookingUnit; // e.g. "One basketball per unit", "One court", "One net"
+
+    @Column(nullable = false)
+    @ColumnDefault("false")
+    private boolean bookingClosed = false;
+
+    @Column(length = 255)
+    private String closureReason;
+
     public Resource() {}
 
     public Resource(Facility facility, String name, String type, ResourceStatus status) {
@@ -36,6 +47,16 @@ public class Resource {
         this.type = type;
         this.status = status;
         this.active = true;
+    }
+
+    public Resource(Facility facility, String name, String type, String bookingUnit, ResourceStatus status) {
+        this.facility = facility;
+        this.name = name;
+        this.type = type;
+        this.bookingUnit = bookingUnit;
+        this.status = status;
+        this.active = true;
+        this.bookingClosed = false;
     }
 
     public Long getId() { return id; }
@@ -55,4 +76,13 @@ public class Resource {
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
+
+    public String getBookingUnit() { return bookingUnit; }
+    public void setBookingUnit(String bookingUnit) { this.bookingUnit = bookingUnit; }
+
+    public boolean isBookingClosed() { return bookingClosed; }
+    public void setBookingClosed(boolean bookingClosed) { this.bookingClosed = bookingClosed; }
+
+    public String getClosureReason() { return closureReason; }
+    public void setClosureReason(String closureReason) { this.closureReason = closureReason; }
 }

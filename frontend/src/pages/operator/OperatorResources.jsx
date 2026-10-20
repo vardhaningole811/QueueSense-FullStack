@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
 import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -11,6 +12,8 @@ import {
   Monitor,
   Armchair,
   Layers,
+  Trophy,
+  ArrowRight,
 } from 'lucide-react';
 
 export default function OperatorResources() {
@@ -100,6 +103,51 @@ export default function OperatorResources() {
       </div>
 
       {error && <ErrorMessage message={error} onRetry={() => fetchResources()} />}
+
+      {/* Sports Inventory Dedicated Management Callout */}
+      <div
+        className="section-card"
+        style={{
+          padding: '16px 20px',
+          marginBottom: 20,
+          backgroundColor: '#f0fdf4',
+          border: '1px solid #bbf7d0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: 12,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: 'var(--radius-md)',
+              backgroundColor: '#dcfce7',
+              color: '#15803d',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Trophy size={20} />
+          </div>
+          <div>
+            <h3 style={{ fontSize: 14, fontWeight: 700, color: '#166534', margin: 0 }}>
+              Sports Complex Inventory & Maintenance Portal
+            </h3>
+            <p style={{ fontSize: 12, color: '#15803d', margin: '2px 0 0' }}>
+              Adjust total equipment stock, mark punctured balls, decommission items, and toggle court closures with reasons.
+            </p>
+          </div>
+        </div>
+        <Link to="/operator/sports-inventory" className="btn btn-primary btn-sm">
+          <span>Open Sports Inventory</span>
+          <ArrowRight size={14} />
+        </Link>
+      </div>
 
       {/* Filter Toolbar */}
       <div className="section-card" style={{ padding: '16px 20px', marginBottom: 20 }}>

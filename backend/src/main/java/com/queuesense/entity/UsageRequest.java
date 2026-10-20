@@ -2,6 +2,7 @@ package com.queuesense.entity;
 
 import com.queuesense.enums.RequestStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,6 +25,10 @@ public class UsageRequest {
     private Resource resource;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "resource_item_id")
+    private ResourceItem resourceItem;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "facility_id", nullable = false)
     private Facility facility;
 
@@ -35,6 +40,13 @@ public class UsageRequest {
 
     @Column(nullable = false)
     private Integer groupSize = 1;
+
+    @Column(nullable = false)
+    @ColumnDefault("1")
+    private Integer quantity = 1;
+
+    private LocalDateTime slotStartTime;
+    private LocalDateTime slotEndTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 30)
@@ -84,6 +96,9 @@ public class UsageRequest {
     public Integer getGroupSize() { return groupSize; }
     public void setGroupSize(Integer groupSize) { this.groupSize = groupSize; }
 
+    public Integer getQuantity() { return quantity != null ? quantity : 1; }
+    public void setQuantity(Integer quantity) { this.quantity = (quantity != null && quantity > 0) ? quantity : 1; }
+
     public RequestStatus getStatus() { return status; }
     public void setStatus(RequestStatus status) { this.status = status; }
 
@@ -107,4 +122,14 @@ public class UsageRequest {
 
     public LocalDateTime getExpiresAt() { return expiresAt; }
     public void setExpiresAt(LocalDateTime expiresAt) { this.expiresAt = expiresAt; }
+
+    public ResourceItem getResourceItem() { return resourceItem; }
+    public void setResourceItem(ResourceItem resourceItem) { this.resourceItem = resourceItem; }
+
+    public LocalDateTime getSlotStartTime() { return slotStartTime; }
+    public void setSlotStartTime(LocalDateTime slotStartTime) { this.slotStartTime = slotStartTime; }
+
+    public LocalDateTime getSlotEndTime() { return slotEndTime; }
+    public void setSlotEndTime(LocalDateTime slotEndTime) { this.slotEndTime = slotEndTime; }
 }
+

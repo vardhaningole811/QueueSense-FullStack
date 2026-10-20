@@ -12,9 +12,12 @@ import {
   ShieldCheck,
   Building2,
   ArrowLeftRight,
+  Trophy,
+  LayoutTemplate,
+  Monitor,
 } from 'lucide-react';
 
-export default function Navbar() {
+export default function Navbar({ layoutMode, onToggleLayout }) {
   const { user, isStudent, isOperator, logout, login } = useAuth();
   const navigate = useNavigate();
 
@@ -75,6 +78,20 @@ export default function Navbar() {
                 <span>Libraries</span>
               </NavLink>
               <NavLink
+                to="/student/elibrary"
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              >
+                <Monitor size={16} />
+                <span>E-Library Floor Plan</span>
+              </NavLink>
+              <NavLink
+                to="/student/sports"
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              >
+                <Trophy size={16} />
+                <span>Sports Complex</span>
+              </NavLink>
+              <NavLink
                 to="/student/requests"
                 className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               >
@@ -115,6 +132,13 @@ export default function Navbar() {
                 <span>Resources</span>
               </NavLink>
               <NavLink
+                to="/operator/sports-inventory"
+                className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+              >
+                <Trophy size={16} />
+                <span>Sports Inventory</span>
+              </NavLink>
+              <NavLink
                 to="/operator/check-ins"
                 className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               >
@@ -134,6 +158,18 @@ export default function Navbar() {
 
         {/* User profile & Actions */}
         <div className="navbar-user-section">
+          {onToggleLayout && (
+            <button
+              type="button"
+              onClick={onToggleLayout}
+              className="btn-quick-switch"
+              title="Switch to experimental modern sidebar layout"
+            >
+              <LayoutTemplate size={14} />
+              <span className="quick-switch-text">Try Sidebar Layout</span>
+            </button>
+          )}
+
           {/* Quick demo switch helper */}
           <button
             type="button"

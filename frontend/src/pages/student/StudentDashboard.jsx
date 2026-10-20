@@ -226,26 +226,36 @@ export default function StudentDashboard() {
         </div>
 
         <div className="facility-grid">
-          {facilities.map((fac) => (
-            <div key={fac.id} className="facility-card">
-              <div>
-                <div className="facility-card-header">
-                  <h3 className="facility-title">{fac.name}</h3>
-                  <span className="facility-type-tag">{fac.category}</span>
+          {facilities.map((fac) => {
+            const isSports = fac.category === 'SPORTS' || fac.type === 'SPORTS' || fac.name?.toLowerCase().includes('sports');
+            const isELibrary = fac.name?.toLowerCase().includes('e-library');
+            const targetUrl = isSports
+              ? '/student/sports'
+              : isELibrary
+              ? '/student/elibrary'
+              : `/student/libraries/${fac.id}`;
+
+            return (
+              <div key={fac.id} className="facility-card">
+                <div>
+                  <div className="facility-card-header">
+                    <h3 className="facility-title">{fac.name}</h3>
+                    <span className="facility-type-tag">{fac.category}</span>
+                  </div>
+                  <p className="facility-desc">{fac.description}</p>
                 </div>
-                <p className="facility-desc">{fac.description}</p>
+                <div className="facility-card-footer">
+                  <span style={{ fontSize: 12, color: 'var(--color-available)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <CheckCircle size={14} /> Live Availability
+                  </span>
+                  <Link to={targetUrl} className="btn btn-secondary btn-sm">
+                    <span>{isSports ? 'View Sports Complex' : isELibrary ? 'Book Seat (Floor Plan)' : 'View Resources'}</span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
               </div>
-              <div className="facility-card-footer">
-                <span style={{ fontSize: 12, color: 'var(--color-available)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <CheckCircle size={14} /> Live Availability
-                </span>
-                <Link to={`/student/libraries/${fac.id}`} className="btn btn-secondary btn-sm">
-                  <span>View Resources</span>
-                  <ArrowRight size={13} />
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

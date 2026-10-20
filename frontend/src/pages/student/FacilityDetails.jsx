@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import StatusBadge from '../../components/common/StatusBadge';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -19,6 +19,7 @@ import {
 
 export default function FacilityDetails() {
   const { facilityId } = useParams();
+  const navigate = useNavigate();
 
   const [facility, setFacility] = useState(null);
   const [resources, setResources] = useState([]);
@@ -38,10 +39,18 @@ export default function FacilityDetails() {
     setError(null);
 
     try {
-      const [facRes, resListRes] = await Promise.all([
-        api.get(`/facilities/${facilityId}`),
-        api.get(`/resources/facility/${facilityId}`),
-      ]);
+      const facRes = await api.get(`/facilities/${facilityId}`);
+      if (
+        facRes.data &&
+        (facRes.data.category === 'SPORTS' ||
+          facRes.data.type === 'SPORTS' ||
+          facRes.data.name?.toLowerCase().includes('sports'))
+      ) {
+        navigate('/student/sports', { replace: true });
+        return;
+      }
+
+      const resListRes = await api.get(`/resources/facility/${facilityId}`);
       setFacility(facRes.data);
       setResources(resListRes.data || []);
     } catch (err) {
@@ -51,7 +60,7 @@ export default function FacilityDetails() {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [facilityId]);
+  }, [facilityId, navigate]);
 
   useEffect(() => {
     fetchFacilityData();
@@ -123,6 +132,53 @@ export default function FacilityDetails() {
       </div>
 
       {error && <ErrorMessage message={error} onRetry={() => fetchFacilityData()} />}
+
+      {/* If this facility is E-Library, show prominent banner linking to the interactive floor plan */}
+      {facility?.name?.toLowerCase().includes('e-library') && (
+        <div
+          className="section-card"
+          style={{
+            padding: '16px 20px',
+            marginBottom: 20,
+            background: 'linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)',
+            border: '1px solid #bfdbfe',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: 14,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'var(--primary)',
+                color: '#ffffff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Monitor size={22} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--navy-900)', margin: 0 }}>
+                Interactive Floor Plan Available (BookMyShow Style)
+              </h3>
+              <p style={{ fontSize: 13, color: 'var(--navy-600)', margin: '2px 0 0' }}>
+                Select from all 68 numbered workstations on the live architectural floor plan with real-time status highlights.
+              </p>
+            </div>
+          </div>
+          <Link to="/student/elibrary" className="btn btn-primary btn-sm">
+            <span>Open Floor Plan</span>
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      )}
 
       {/* Facility Summary Stats */}
       <div className="stats-grid">

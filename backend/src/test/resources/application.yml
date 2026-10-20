@@ -1,0 +1,26 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: queuesense-backend-test
+  datasource:
+    url: jdbc:h2:mem:queuesensetest;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL;NON_KEYWORDS=USER,YEAR
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: false
+        globally_quoted_identifiers: true
+
+app:
+  jwt:
+    secret: QueueSenseSuperSecretKeyForJWTSigningThatIsLongEnough2026!
+    expiration-milliseconds: 86400000
+  booking:
+    grace-period-minutes: 10

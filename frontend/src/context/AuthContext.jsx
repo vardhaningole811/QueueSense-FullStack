@@ -55,7 +55,8 @@ export function AuthProvider({ children }) {
   };
 
   const isStudent = user?.role === 'ROLE_STUDENT';
-  const isOperator = user?.role === 'ROLE_OPERATOR';
+  const isOperator = user?.role === 'ROLE_OPERATOR' || user?.role === 'ROLE_ADMIN';
+  const isAdmin = user?.role === 'ROLE_ADMIN';
   const isAuthenticated = !!token && !!user;
 
   return (

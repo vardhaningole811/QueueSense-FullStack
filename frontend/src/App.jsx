@@ -13,6 +13,8 @@ import FacilityDetails from './pages/student/FacilityDetails';
 import MyRequests from './pages/student/MyRequests';
 import DigitalConfirmation from './pages/student/DigitalConfirmation';
 import StudentHistory from './pages/student/StudentHistory';
+import SportsComplex from './pages/student/SportsComplex';
+import ELibrarySeatBooking from './pages/student/ELibrarySeatBooking';
 
 // Operator Pages
 import OperatorDashboard from './pages/operator/OperatorDashboard';
@@ -20,6 +22,7 @@ import OperatorRequests from './pages/operator/OperatorRequests';
 import OperatorResources from './pages/operator/OperatorResources';
 import OperatorCheckIn from './pages/operator/OperatorCheckIn';
 import OperatorHistory from './pages/operator/OperatorHistory';
+import SportsInventoryManagement from './pages/operator/SportsInventoryManagement';
 
 import './App.css';
 
@@ -27,7 +30,7 @@ function RootRedirect() {
   const { user, isAuthenticated, loading } = useAuth();
   if (loading) return null;
   if (!isAuthenticated) return <Navigate to="/login" replace />;
-  if (user?.role === 'ROLE_OPERATOR') return <Navigate to="/operator/dashboard" replace />;
+  if (user?.role === 'ROLE_OPERATOR' || user?.role === 'ROLE_ADMIN') return <Navigate to="/operator/dashboard" replace />;
   return <Navigate to="/student/dashboard" replace />;
 }
 
@@ -53,6 +56,9 @@ export default function App() {
             <Route path="dashboard" element={<StudentDashboard />} />
             <Route path="libraries" element={<LibrariesList />} />
             <Route path="libraries/:facilityId" element={<FacilityDetails />} />
+            <Route path="elibrary" element={<ELibrarySeatBooking />} />
+            <Route path="elibrary/:facilityId" element={<ELibrarySeatBooking />} />
+            <Route path="sports" element={<SportsComplex />} />
             <Route path="requests" element={<MyRequests />} />
             <Route path="confirmation/:requestId" element={<DigitalConfirmation />} />
             <Route path="history" element={<StudentHistory />} />
@@ -71,6 +77,7 @@ export default function App() {
             <Route path="dashboard" element={<OperatorDashboard />} />
             <Route path="requests" element={<OperatorRequests />} />
             <Route path="resources" element={<OperatorResources />} />
+            <Route path="sports-inventory" element={<SportsInventoryManagement />} />
             <Route path="check-ins" element={<OperatorCheckIn />} />
             <Route path="history" element={<OperatorHistory />} />
           </Route>

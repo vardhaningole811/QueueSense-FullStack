@@ -17,23 +17,34 @@ public class DataInitializer implements CommandLineRunner {
     private final FacilityRepository facilityRepository;
     private final ResourceRepository resourceRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.queuesense.service.SportsInventoryService sportsInventoryService;
+    private final com.queuesense.service.ELibraryService eLibraryService;
 
     public DataInitializer(UserRepository userRepository,
                            StudentProfileRepository studentProfileRepository,
                            OperatorProfileRepository operatorProfileRepository,
                            FacilityRepository facilityRepository,
                            ResourceRepository resourceRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           com.queuesense.service.SportsInventoryService sportsInventoryService,
+                           com.queuesense.service.ELibraryService eLibraryService) {
         this.userRepository = userRepository;
         this.studentProfileRepository = studentProfileRepository;
         this.operatorProfileRepository = operatorProfileRepository;
         this.facilityRepository = facilityRepository;
         this.resourceRepository = resourceRepository;
         this.passwordEncoder = passwordEncoder;
+        this.sportsInventoryService = sportsInventoryService;
+        this.eLibraryService = eLibraryService;
     }
 
     @Override
     public void run(String... args) throws Exception {
+        // Always ensure sports inventory upgrade is initialized
+        sportsInventoryService.initializeSportsInventory();
+        // Always ensure full 68-workstation E-Library seating arrangement is initialized
+        eLibraryService.initializeELibraryWorkstations();
+
         if (userRepository.count() > 0) {
             return; // Already seeded
         }
@@ -68,22 +79,23 @@ public class DataInitializer implements CommandLineRunner {
         resourceRepository.save(new Resource(elibrary, "Seat 01", "SEAT", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 02", "SEAT", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 03", "SEAT", ResourceStatus.AVAILABLE));
-        resourceRepository.save(new Resource(elibrary, "PC 04", "PC", ResourceStatus.OCCUPIED));
+        resourceRepository.save(new Resource(elibrary, "PC 04", "PC", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 05", "SEAT", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 06", "SEAT", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 07", "SEAT", ResourceStatus.MAINTENANCE));
         resourceRepository.save(new Resource(elibrary, "PC 08", "PC", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(elibrary, "Seat 09", "SEAT", ResourceStatus.AVAILABLE));
+        for (int i = 10; i <= 68; i++) {
+            resourceRepository.save(new Resource(elibrary, String.format("Workstation %02d", i), "PC", ResourceStatus.AVAILABLE));
+        }
 
         // Seed Resources for Reading Room
         resourceRepository.save(new Resource(readingRoom, "Desk A-1", "DESK", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(readingRoom, "Desk A-2", "DESK", ResourceStatus.AVAILABLE));
         resourceRepository.save(new Resource(readingRoom, "Desk B-1", "DESK", ResourceStatus.AVAILABLE));
 
-        // Seed Resources for Sports Complex
-        resourceRepository.save(new Resource(sportsComplex, "Badminton Court", "COURT", ResourceStatus.AVAILABLE));
-        resourceRepository.save(new Resource(sportsComplex, "Tennis Court", "COURT", ResourceStatus.AVAILABLE));
-        resourceRepository.save(new Resource(sportsComplex, "Basketball Court", "COURT", ResourceStatus.AVAILABLE));
+        // Seed Resources for Sports Complex via SportsInventoryService
+        sportsInventoryService.initializeSportsInventory();
 
         System.out.println(">>> QueueSense Demo Seed Data Initialized Successfully! <<<");
     }

@@ -18,11 +18,16 @@ export default function ProtectedRoute({ children, allowedRole }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  if (allowedRole && user.role !== allowedRole) {
+  const isRoleAllowed =
+    !allowedRole ||
+    user.role === allowedRole ||
+    (allowedRole === 'ROLE_OPERATOR' && user.role === 'ROLE_ADMIN');
+
+  if (!isRoleAllowed) {
     // Redirect to the user's primary dashboard if role mismatch
     if (user.role === 'ROLE_STUDENT') {
       return <Navigate to="/student/dashboard" replace />;
-    } else if (user.role === 'ROLE_OPERATOR') {
+    } else {
       return <Navigate to="/operator/dashboard" replace />;
     }
   }

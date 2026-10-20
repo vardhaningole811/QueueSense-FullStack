@@ -67,7 +67,7 @@ export default function DigitalConfirmation() {
 
   return (
     <div className="digital-confirmation-page">
-      <div style={{ marginBottom: 20, maxWidth: 580, margin: '0 auto 20px' }}>
+      <div className="no-print" style={{ marginBottom: 20, maxWidth: 580, margin: '0 auto 20px' }}>
         <Link to="/student/requests" className="btn btn-outline btn-sm" style={{ display: 'inline-flex' }}>
           <ArrowLeft size={14} />
           <span>Back to My Requests</span>
@@ -75,7 +75,7 @@ export default function DigitalConfirmation() {
       </div>
 
       <div className="confirmation-wrapper">
-        <div className="digital-pass-card">
+        <div className="digital-pass-card printable-pass" id="printable-pass">
           {/* Header */}
           <div className="pass-header">
             <div className="pass-brand">
@@ -179,7 +179,7 @@ export default function DigitalConfirmation() {
                 </div>
 
                 {/* Actions */}
-                <div className="pass-footer-actions">
+                <div className="pass-footer-actions no-print">
                   <button
                     type="button"
                     className="btn btn-secondary"
