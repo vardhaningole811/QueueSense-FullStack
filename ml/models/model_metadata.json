@@ -1,0 +1,194 @@
+{
+  "model_selected": "Gradient Boosting",
+  "is_prototype": true,
+  "data_source": "SYNTHETIC PROTOTYPE DATASET \u2014 Real-world physical headcount validation pending",
+  "validation_status": "PROTOTYPE \u2014 REAL-WORLD VALIDATION PENDING",
+  "disclaimer": "PROTOTYPE \u2014 REAL-WORLD VALIDATION PENDING. Trained on simulated campus library patterns. Real-world model accuracy has NOT been established.",
+  "training_timestamp": "2026-10-23 11:34:31",
+  "sample_size": 1564,
+  "train_samples": 1094,
+  "validation_samples": 235,
+  "test_samples": 235,
+  "horizons_minutes": [
+    15,
+    30,
+    60
+  ],
+  "feature_columns": [
+    "hour",
+    "minute",
+    "day_of_week",
+    "is_weekend",
+    "occupancy_now",
+    "occupancy_lag15",
+    "occupancy_lag30",
+    "occupancy_lag60",
+    "rolling_mean_1h",
+    "delta_15m"
+  ],
+  "best_metrics": {
+    "name": "Gradient Boosting",
+    "val_mae_avg": 0.684,
+    "val_rmse_avg": 0.845,
+    "test_mae_avg": 0.826,
+    "test_rmse_avg": 0.988,
+    "by_horizon": {
+      "+15m": {
+        "val_mae": 0.614,
+        "val_rmse": 0.741,
+        "test_mae": 0.717,
+        "test_rmse": 0.841
+      },
+      "+30m": {
+        "val_mae": 0.703,
+        "val_rmse": 0.884,
+        "test_mae": 0.871,
+        "test_rmse": 1.053
+      },
+      "+60m": {
+        "val_mae": 0.735,
+        "val_rmse": 0.911,
+        "test_mae": 0.888,
+        "test_rmse": 1.07
+      }
+    }
+  },
+  "baseline_metrics": {
+    "name": "Naive Baseline (Last Observed Persistence)",
+    "val_mae_avg": 0.966,
+    "val_rmse_avg": 1.254,
+    "test_mae_avg": 1.01,
+    "test_rmse_avg": 1.319,
+    "by_horizon": {
+      "+15m": {
+        "val_mae": 0.626,
+        "val_rmse": 0.858,
+        "test_mae": 0.698,
+        "test_rmse": 0.936
+      },
+      "+30m": {
+        "val_mae": 0.911,
+        "val_rmse": 1.196,
+        "test_mae": 1.047,
+        "test_rmse": 1.343
+      },
+      "+60m": {
+        "val_mae": 1.362,
+        "val_rmse": 1.709,
+        "test_mae": 1.285,
+        "test_rmse": 1.678
+      }
+    }
+  },
+  "all_models_comparison": {
+    "Linear Regression": {
+      "name": "Linear Regression",
+      "val_mae_avg": 0.907,
+      "val_rmse_avg": 1.118,
+      "test_mae_avg": 0.971,
+      "test_rmse_avg": 1.191,
+      "by_horizon": {
+        "+15m": {
+          "val_mae": 0.668,
+          "val_rmse": 0.826,
+          "test_mae": 0.749,
+          "test_rmse": 0.903
+        },
+        "+30m": {
+          "val_mae": 0.901,
+          "val_rmse": 1.099,
+          "test_mae": 1.003,
+          "test_rmse": 1.224
+        },
+        "+60m": {
+          "val_mae": 1.15,
+          "val_rmse": 1.43,
+          "test_mae": 1.162,
+          "test_rmse": 1.447
+        }
+      }
+    },
+    "Decision Tree": {
+      "name": "Decision Tree",
+      "val_mae_avg": 0.793,
+      "val_rmse_avg": 1.027,
+      "test_mae_avg": 0.93,
+      "test_rmse_avg": 1.134,
+      "by_horizon": {
+        "+15m": {
+          "val_mae": 0.655,
+          "val_rmse": 0.8,
+          "test_mae": 0.756,
+          "test_rmse": 0.919
+        },
+        "+30m": {
+          "val_mae": 0.795,
+          "val_rmse": 1.033,
+          "test_mae": 0.95,
+          "test_rmse": 1.171
+        },
+        "+60m": {
+          "val_mae": 0.928,
+          "val_rmse": 1.247,
+          "test_mae": 1.083,
+          "test_rmse": 1.311
+        }
+      }
+    },
+    "Random Forest": {
+      "name": "Random Forest",
+      "val_mae_avg": 0.703,
+      "val_rmse_avg": 0.879,
+      "test_mae_avg": 0.854,
+      "test_rmse_avg": 1.028,
+      "by_horizon": {
+        "+15m": {
+          "val_mae": 0.644,
+          "val_rmse": 0.777,
+          "test_mae": 0.725,
+          "test_rmse": 0.861
+        },
+        "+30m": {
+          "val_mae": 0.73,
+          "val_rmse": 0.936,
+          "test_mae": 0.885,
+          "test_rmse": 1.079
+        },
+        "+60m": {
+          "val_mae": 0.736,
+          "val_rmse": 0.925,
+          "test_mae": 0.951,
+          "test_rmse": 1.146
+        }
+      }
+    },
+    "Gradient Boosting": {
+      "name": "Gradient Boosting",
+      "val_mae_avg": 0.684,
+      "val_rmse_avg": 0.845,
+      "test_mae_avg": 0.826,
+      "test_rmse_avg": 0.988,
+      "by_horizon": {
+        "+15m": {
+          "val_mae": 0.614,
+          "val_rmse": 0.741,
+          "test_mae": 0.717,
+          "test_rmse": 0.841
+        },
+        "+30m": {
+          "val_mae": 0.703,
+          "val_rmse": 0.884,
+          "test_mae": 0.871,
+          "test_rmse": 1.053
+        },
+        "+60m": {
+          "val_mae": 0.735,
+          "val_rmse": 0.911,
+          "test_mae": 0.888,
+          "test_rmse": 1.07
+        }
+      }
+    }
+  },
+  "data_validation_issues": []
+}
