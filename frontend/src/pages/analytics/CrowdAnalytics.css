@@ -1,0 +1,358 @@
+/* QueueSense — Crowd Analytics dashboard redesign */
+
+.crowd-analytics-page {
+  --crowd-ink: #172554;
+  --crowd-muted: #64748b;
+  --crowd-border: #e2e8f0;
+  --crowd-surface: #ffffff;
+  --crowd-primary: #4f46e5;
+  --crowd-soft: #eef2ff;
+  color: var(--crowd-ink);
+  padding-bottom: 28px;
+}
+
+.crowd-analytics-page .page-header {
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.crowd-analytics-page .page-title {
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+
+.crowd-analytics-page .page-description {
+  max-width: 760px;
+  line-height: 1.7;
+  color: var(--crowd-muted);
+}
+
+.crowd-analytics-page .analytics-header-icon {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid #c7d2fe;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #eef2ff, #f5f3ff);
+}
+
+.crowd-analytics-page .section-card {
+  min-width: 0;
+  overflow: hidden;
+  padding: 24px;
+  border: 1px solid var(--crowd-border);
+  border-radius: 20px;
+  background: var(--crowd-surface);
+  box-shadow: 0 5px 20px rgb(15 23 42 / 4%);
+  transition: box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.crowd-analytics-page .section-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 9px 28px rgb(15 23 42 / 6%);
+}
+
+.crowd-analytics-page .section-card-header {
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
+.crowd-analytics-page .section-title {
+  color: var(--crowd-ink);
+  font-size: 17px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+}
+
+.crowd-analytics-page .analytics-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.crowd-analytics-page .metric-box {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e6eaf2;
+  border-radius: 16px;
+  background: linear-gradient(155deg, #fff 45%, #f8faff);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.crowd-analytics-page .metric-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 18px rgb(15 23 42 / 5%);
+}
+
+.crowd-analytics-page .metric-box-title {
+  display: block;
+  min-height: 36px;
+  color: var(--crowd-muted);
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.crowd-analytics-page .metric-box-value {
+  display: block;
+  margin: 8px 0;
+  color: var(--crowd-ink);
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.crowd-analytics-page .metric-box-subtitle {
+  display: block;
+  color: var(--crowd-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.crowd-analytics-page .progress-bar-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #edf1f7;
+}
+
+.crowd-analytics-page .progress-bar-fill {
+  min-width: 0;
+  border-radius: inherit;
+  transition: width 350ms ease;
+}
+
+.crowd-analytics-page .clarification-box {
+  padding: 13px 15px;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  background: #f5f9ff;
+  color: #475569;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.crowd-analytics-page .forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.crowd-analytics-page .forecast-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e0e7ff;
+  border-radius: 17px;
+  background:
+    radial-gradient(ellipse at top right, rgb(224 231 255 / 65%), transparent 60%),
+    #fff;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.crowd-analytics-page .forecast-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgb(79 70 229 / 9%);
+}
+
+.crowd-analytics-page .forecast-card-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 9px;
+}
+
+.crowd-analytics-page .forecast-horizon-pill {
+  display: inline-flex;
+  padding: 6px 10px;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+.crowd-analytics-page .forecast-target-time {
+  color: var(--crowd-muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+.crowd-analytics-page .forecast-headcount-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.crowd-analytics-page .forecast-headcount-value {
+  color: var(--crowd-ink);
+  font-size: clamp(30px, 4vw, 42px);
+  font-weight: 850;
+  letter-spacing: -0.05em;
+}
+
+.crowd-analytics-page .forecast-headcount-unit {
+  color: var(--crowd-muted);
+  font-size: 12px;
+}
+
+.crowd-analytics-page .decision-support-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.crowd-analytics-page .decision-card {
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 22px;
+  border: 1px solid var(--crowd-border);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(15 23 42 / 3%);
+}
+
+.crowd-analytics-page .decision-card-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 14px;
+}
+
+.crowd-analytics-page .decision-card-body {
+  min-width: 0;
+}
+
+.crowd-analytics-page .decision-card-title {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--crowd-muted);
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.crowd-analytics-page .decision-card-highlight {
+  display: block;
+  color: var(--crowd-ink);
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.crowd-analytics-page .decision-card-desc {
+  margin-top: 8px;
+  color: var(--crowd-muted);
+  font-size: 12px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.crowd-analytics-page .prototype-notice-banner,
+.crowd-analytics-page .offline-alert-banner {
+  border-radius: 15px;
+  line-height: 1.7;
+}
+
+.crowd-analytics-page .transparency-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--crowd-border);
+  border-radius: 12px;
+}
+
+.crowd-analytics-page .transparency-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.crowd-analytics-page .transparency-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf1f6;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.crowd-analytics-page .transparency-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.crowd-analytics-page .transparency-table tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.crowd-analytics-page .recharts-default-tooltip {
+  border: 1px solid var(--crowd-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 8%);
+}
+
+@media (max-width: 1000px) {
+  .crowd-analytics-page .analytics-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .crowd-analytics-page .forecast-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .crowd-analytics-page .section-card {
+    padding: 17px;
+    border-radius: 15px;
+  }
+
+  .crowd-analytics-page .analytics-metrics-grid,
+  .crowd-analytics-page .forecast-grid,
+  .crowd-analytics-page .decision-support-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .crowd-analytics-page .metric-box {
+    padding: 16px;
+  }
+
+  .crowd-analytics-page .metric-box-title {
+    min-height: 0;
+  }
+
+  .crowd-analytics-page .decision-card {
+    padding: 17px;
+  }
+
+  .crowd-analytics-page .page-header {
+    align-items: stretch;
+  }
+
+  .crowd-analytics-page .header-actions {
+    width: 100%;
+  }
+
+  .crowd-analytics-page #facility-select {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crowd-analytics-page *,
+  .crowd-analytics-page *::before,
+  .crowd-analytics-page *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

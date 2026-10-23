@@ -46,3 +46,10 @@ pgsql/logfile.log
 .DS_Store
 Thumbs.db
 Desktop.ini
+
+# Python / Machine Learning generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+ml/.venv/

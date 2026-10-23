@@ -1,0 +1,6 @@
+observation_timestamp,facility_name,people_present_estimate,usable_capacity,people_arrived_since_previous,people_left_since_previous,notes
+2026-10-20 09:00:00,E-Library,2,8,2,0,[SAMPLE_ONLY_DO_NOT_USE_FOR_REAL_TRAINING] Morning opening crowd
+2026-10-20 09:15:00,E-Library,3,8,1,0,[SAMPLE_ONLY_DO_NOT_USE_FOR_REAL_TRAINING] Early arrivals
+2026-10-20 09:30:00,E-Library,4,8,2,1,[SAMPLE_ONLY_DO_NOT_USE_FOR_REAL_TRAINING] Study group seated
+2026-10-20 09:45:00,E-Library,5,8,1,0,[SAMPLE_ONLY_DO_NOT_USE_FOR_REAL_TRAINING] Individual computer stations active
+2026-10-20 10:00:00,E-Library,6,8,2,1,[SAMPLE_ONLY_DO_NOT_USE_FOR_REAL_TRAINING] Moderate morning density
